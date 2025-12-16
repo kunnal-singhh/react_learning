@@ -1,27 +1,66 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { use, useCallback, useEffect, useRef, useState } from "react";
+import  InputBox  from "./components/index.js";
+import useCurrencyInfo from "./hooks/useCurrencyInfo.js";
 
 // default export and can be only one default export
 
 export default function App() {
   //  let count=0;
   let [count, setCount] = useState(0);
+  let [incDisabled, setIncDisabled] = useState(false);
+  let [decDisabled, setDecDisabled] = useState(false);
+  useEffect(() => {
+    if (count >= 20) {
+      setIncDisabled(true);
+    } else {
+      setIncDisabled(false);
+    }
+    if (count < 0) {
+      setDecDisabled(true);
+    } else {
+      setDecDisabled(false);
+    }
+  }, [count]);
+  
   function increaseNumber() {
     //   count++;
     //   const para=document.querySelector('p');
     //   para.innerText=`Counters:${count}`
-    count = count + 1;
+       count = count + 1;
     if (count < 21) {
-      setCount(count + 1);
+      
+     
+      setCount(count);console.log("count", count);
     }
-    else return;
+    else { 
+      setIncDisabled(true);
+      return; 
+    }
+  }
+  function decreaseNumber() { 
+     count = count - 1;
+    if (count >= 0) {
+     
+     
+      setCount(count ); console.log("count", count);
+    }
+    else { 
+      setDecDisabled(true);
+      return;
+    }
+
   }
   return (
-
-    <div style={{ display: 'flex', flexDirection: 'column', height: '25vh', justifyContent: 'center', alignItems: 'center', }}>
-      <p>Counter:{count}</p>
-      <button onClick={increaseNumber}>Increment</button>
+    <>
+    <h2 id="counterApp" className="text-center mt-4">Counter</h2>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '25vh', justifyContent: 'center', alignItems: 'center', marginTop: '1rem' }} id="counterApp" className="shadow-lg p-4 rounded-4 bg-light col-7 col-lg-5 mx-auto">
+      <p className="text-center fs-5">Counter :<input type="number" value={count} readOnly className="border-0 bg-transparent text-center fs-5 w-25 "/></p>
+      <div className="d-flex gap-3 ">
+      <button disabled={incDisabled} onClick={increaseNumber} className="btn btn-primary">Increment</button>
+      <button disabled={decDisabled} onClick={decreaseNumber} className="btn btn-primary">Decrement</button>
+      </div>
     </div>
-
+    </>
   );
 
 }
@@ -32,7 +71,24 @@ export function NavBar() {
 
     <>
 
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <div className="container-fluid mt-4 mb-4">
+        <div className="container  py-3 z-5 bg-white rounded-5  shadow-sm" style={{ position: 'sticky', Top: '1rem', left: 0, right: 0, height: '50px' ,border: '1px solid #ccc'}} id="top">
+          <div className="row  d-flex flex-row justify-content-center align-items-center">
+            <div className="col-6 col-lg-3 text-center " >
+              <a href="#top" className="text-decoration-none text-dark ms-3 fw-bolder "  >ReactLearning</a>
+            </div>
+            <div className="col-6 col-lg-9  d-flex flex-row justify-content-evenly align-items-center ">
+              <a href="#currencyConverter" className="text-decoration-none text-dark ms-3" >CurrencyConverter</a>
+              <a href="#counterApp" className="text-decoration-none text-dark ms-3" >CounterApp</a>
+              <a href="#clockApp" className="text-decoration-none text-dark ms-3" >ClockApp</a>
+              <a href="#passwordGenerator" className="text-decoration-none text-dark ms-3" >PasswordGenerator</a>
+              <a href="#todoList" className="text-decoration-none text-dark ms-3" >TodoList</a>
+              <a href="#githubUsers" className="text-decoration-none text-dark ms-3" >GitHubUsers</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <a className="navbar-brand" href="#">Navbar</a>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
@@ -66,7 +122,7 @@ export function NavBar() {
             <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
           </form>
         </div>
-      </nav>
+      </nav>  */}
     </>
 
 
@@ -92,17 +148,18 @@ export function UserImageFn() {
 
   return (
     <>
-      <hr></hr>
-      <h1 style={{ textAlign: 'center', margin: '20px 0' }}>GitHub Users</h1>
-      <input type="text" value={name} style={{ display: 'block', margin: '10px auto' }} onChange={(e) => setName(e.target.value)} placeholder="Search Users" />
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
-        {
-          usersImg.map((user) => (
+      <h2 id="githubUsers" style={{ textAlign: 'center', margin: '20px 0' }}>GitHub Users</h2>
+      <div className="container shadow-lg p-4 rounded-4 bg-light w-100 mx-auto">
+        <input type="text" value={name} style={{ display: 'block', margin: '10px auto' }} onChange={(e) => setName(e.target.value)} placeholder="Search Users" />
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
+          {
+            usersImg.map((user) => (
 
-            <img src={user.avatar_url} alt={user.login} style={{ width: '100px', height: '100px' }} key={user.login} />
+              <img src={user.avatar_url} alt={user.login} style={{ width: '100px', height: '100px' }} key={user.login} />
 
-          ))
-        }
+            ))
+          }
+        </div>
       </div>
     </>
   )
@@ -143,13 +200,16 @@ export function Clock() {
 
   return (
     <>
-      <hr></hr>
-      <div style={{ display: 'flex', flexDirection: 'column', height: '25vh', justifyContent: 'center', alignItems: 'center', }}  >
-        <h1>Current Time</h1>
-        <div className="timeContainer" style={{ textAlign: 'center', marginTop: '20px' }}>
-          <h2> {time}</h2>
+      <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', height: '25vh', justifyContent: 'center', alignItems: 'center', }} id="clockApp" >
+        <h2 className="mt-2">Current Time</h2>
+        <div className="shadow-lg p-4 rounded-4 bg-light col-6 col-lg-5 mx-auto mt-2">
+          <div className="timeContainer" style={{ textAlign: 'center', marginTop: '20px' }}>
+            <h2> {time}</h2>
+          </div>
+          <div className="text-center mt-3">
+            <button className="timeBtn btn btn-primary " onClick={manageTime}>Hide</button>
+          </div>
         </div>
-        <button className="timeBtn" onClick={manageTime}>Hide</button>
       </div>
     </>
   )
@@ -162,7 +222,7 @@ export function BackgroundColor() {
     <>
 
       <div className="container-fluid position-fixed bottom-0 mb-2">
-        <div className="container rounded-5 bg-white p-2 ">
+        <div className="container rounded-5 bg-white p-2 shadow-lg w-75 mx-auto">
           <div className="row row-cols-7 d-flex gap-2 text-center m-2 flex-wrap justify-content-center align-items-center text-white">
             <button className="col bg-primary text-white border-1 rounded-4 " onClick={() => setBgColor("blue")} >Blue</button>
             <button className="col bg-warning text-dark border-1 rounded-4" onClick={() => setBgColor("yellow")}>Yellow</button>
@@ -183,7 +243,7 @@ export function PasswordGenerator() {
   const [specialChar, setSpecialChar] = useState(false);
   const [password, setPassword] = useState("");
 
- const generator = useCallback(() => {
+  const generator = useCallback(() => {
     let chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     if (number) {
       chars += "0123456789";
@@ -193,121 +253,191 @@ export function PasswordGenerator() {
     }
     let passwordResult = "";
     for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * chars.length+1);
+      const randomIndex = Math.floor(Math.random() * chars.length + 1);
       passwordResult += chars.charAt(randomIndex);
     }
     setPassword(passwordResult);
   }, [length, number, specialChar]);
 
-  const passwordRef=useRef(null);
-  const copyPassword=useCallback(()=>{
+  const passwordRef = useRef(null);
+  const copyPassword = useCallback(() => {
     passwordRef.current?.select()
     // passwordRef.current?.setSelectionRange(0,19);
-   window.navigator.clipboard.writeText(password);
+    window.navigator.clipboard.writeText(password);
 
-  },[password]);
-  useEffect(() => { 
+  }, [password]);
+  useEffect(() => {
     generator();
   }, [length, number, specialChar]);
 
-  return ( 
+  return (
     <>
-    <hr></hr>
-      <h2 className="text-center">Password Generator</h2>
-      <div className="conainer-fluid">
-        <div className="container w-50 border p-4 rounded-4 bg-light px-5">
+     
+      <h2 className="text-center mt-4" id="passwordGenerator">Password Generator</h2>
+      <div className="conainer-fluid mt-3">
+        <div className="container  bg-light px-5 shadow-lg p-4 rounded-4 mx-auto col-10 col-lg-5 ">
           <div className="row d-flex flex-row justify-content-center align-items-center gap-3 gap-lg-0">
             <div className="col-12 col-lg-10 p-0">
-              <input type="text"  ref={passwordRef} style={{ "height": "35px", "padding-left": "10px" }} value={password} readOnly placeholder="Generated Password" className="w-100 border-1 rounded-2" />
+              <input type="text" ref={passwordRef} style={{ "height": "35px", "padding-left": "10px" }} value={password} readOnly placeholder="Generated Password" className="w-100 border-1 rounded-2" />
             </div>
-            <div className="col-12 col-lg-2 p-0">  <button className="btn btn-primary px-3 py-1 w-100 rounded-2 "onClick={copyPassword}>Copy </button></div>
+            <div className="col-12 col-lg-2 p-0">  <button className="btn btn-primary px-3 py-1 w-100 rounded-2 " onClick={copyPassword}>Copy </button></div>
           </div>
-    <div className="d-flex flex-lg-row flex-column gap-4 mt-3 ">
+          <div className="d-flex flex-lg-row flex-column gap-4 mt-3 ">
 
-  <div className="d-flex align-items-center gap-2">
-    <input type="range" min="4" max="20" value={length}
-      onChange={(e) => setLength(e.target.value)} />
-    <label>Length: {length}   </label>
-  </div>
+            <div className="d-flex align-items-center gap-2">
+              <input type="range" min="4" max="20" value={length}
+                onChange={(e) => setLength(e.target.value)} />
+              <label>Length: {length}   </label>
+            </div>
 
-  <div className="d-flex align-items-center gap-2">
-    <input type="checkbox" checked={number}
-      onChange={() => setNumber((prev)=>!prev)} />
-    <label>Numbers</label>
-  </div>
+            <div className="d-flex align-items-center gap-2">
+              <input type="checkbox" checked={number}
+                onChange={() => setNumber((prev) => !prev)} />
+              <label>Numbers</label>
+            </div>
 
-  <div className="d-flex align-items-center gap-2">
-    <input type="checkbox" checked={specialChar}
-      onChange={() => setSpecialChar((prev)=>!prev)} />
-    <label>Characters</label>
-  </div>
+            <div className="d-flex align-items-center gap-2">
+              <input type="checkbox" checked={specialChar}
+                onChange={() => setSpecialChar((prev) => !prev)} />
+              <label>Characters</label>
+            </div>
 
-</div>
+          </div>
 
         </div>
-        </div>
-      </>
-      )
- }
+      </div>
+    </>
+  )
+}
 
- export function TodoList() { 
+export function TodoList() {
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState([]);
 
-  function addTask(){ 
-    if(task==="")
+  function addTask() {
+    if (task === "")
       return;
-    setTasks([...tasks,{text:task,done:false}]);
+    setTasks([...tasks, { text: task, done: false }]);
     setTask("")
   }
 
-  function manageRemove(index)
-  { 
+  function manageRemove(index) {
     setTasks(tasks.filter((_, i) => i !== index));
   }
- function toggleDone(index)
- { 
-  const newTasks=[...tasks];
-  tasks[index].done=!tasks[index].done;
-   setTasks(newTasks);
- }
-  
-  return( 
-    <> 
-    <hr></hr>
-              <h1 className="text-center">TodoList</h1>
-          <div className="conatiner-fluid">
-            <div className="container w-50 border rounded-3 bg-light "> 
-              <div className="row "> 
-                 <ol className="list-group " style={{padding:"10px"}}>
-                { 
-                 tasks.map((t,index)=>(
-                    <li className="list-group-item" key={index}>
-                    { 
-                      <div className="d-flex flex-row justify-content-between align-items-center"> 
-                         <div style={{ textDecoration: t.done ? "line-through" : "none" }}>{index+1}.   {t.text}</div>
-                       <div className="d-flex flex-row justify-content-justify-content-evenly align-items-center gap-2 "> 
-                         <button className="btn btn-secondary" style={{backgroundColor: t.done?"gray":"black"}}onClick={()=>toggleDone(index)}>{t.done?"Undo":"Done"}</button>
-                         <button className="btn btn-danger" onClick={()=>manageRemove(index)}>Remove</button>
-                       </div>
+  function toggleDone(index) {
+    const newTasks = [...tasks];
+    tasks[index].done = !tasks[index].done;
+    setTasks(newTasks);
+  }
+
+  return (
+    <>
+      <h2 className="text-center mt-5" id="todoList">TodoList</h2>
+      <div className="conatiner-fluid p-2">
+        <div className="container col-10 col-lg-5 border bg-light shadow-lg p-4 rounded-4 mx-auto ">
+          <div className="row ">
+            <ol className="list-group " style={{ padding: "10px" }}>
+              {
+                tasks.map((t, index) => (
+                  <li className="list-group-item " key={index}>
+                    {
+                      <div className="d-flex flex-row justify-content-between align-items-center">
+                        <div className="ps-2" style={{ textDecoration: t.done ? "line-through" : "none" }}>{index + 1}.   {t.text}</div>
+                        <div className="d-flex flex-row justify-content-justify-content-evenly align-items-center gap-2 ">
+                          <button className="btn btn-secondary" style={{ backgroundColor: t.done ? "gray" : "black" }} onClick={() => toggleDone(index)}>{t.done ? "Undo" : "Done"}</button>
+                          <button className="btn btn-danger" onClick={() => manageRemove(index)}>Remove</button>
+                        </div>
                       </div>
                     }
-                     </li>
-                 ))
-                  
-                }
-              </ol>
-              </div>
-               <div className="row d-flex flex-row justify-content-center align-items-center gap-2 gap-lg-2 mt-2 p-2">
+                  </li>
+                ))
+
+              }
+            </ol>
+          </div>
+          <div className="row d-flex flex-row justify-content-center align-items-center gap-2 gap-lg-2 mt-2 p-2">
             <div className="col-12 col-lg-7 p-0">
-              <input type="text" style={{ "height": "35px", "padding-left": "10px" }} value={task} onChange={(e)=>{ setTask(e.target.value)}} placeholder="add task" className="w-100 border-1 rounded-2" />
+              <input type="text" style={{ "height": "35px", "padding-left": "10px" }} value={task} onChange={(e) => { setTask(e.target.value) }} placeholder="add task" className="w-100 border-1 rounded-2" />
             </div>
-            <div className="col-12 col-lg-2 p-0">  <button className="btn btn-primary px-3 py-1 w-100 rounded-2 "onClick={addTask}>Add </button></div>
+            <div className="col-12 col-lg-2 p-0">  <button className="btn btn-primary px-3 py-1 w-100 rounded-2 " onClick={addTask}>Add </button></div>
           </div>
-             
-            </div>
-            
-          </div>
+
+        </div>
+
+      </div>
     </>
   )
- }
+}
+
+export function ScrollToTop() {
+
+
+  return (
+    <>
+      <button style={{ borderRadius: '50%', position: 'fixed', bottom: '50px', right: '30px', backgroundColor: 'black' }} className="btn btn-secondary" onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }) }}>^</button>
+    </>
+  )
+}
+
+export function CurrencyConverter() {
+  const [amount, setAmount] = useState("");
+  const [calculatedAmount, setCalculatedAmount] = useState("");
+  const [from, setFrom] = useState("usd");
+  const [to, setTo] = useState("inr");
+  const currencyInfo = useCurrencyInfo(from);
+  const options = Object.keys(currencyInfo);
+ const swap = () => {
+ const temp=from;
+    setFrom(to);
+    setTo(temp); 
+    setAmount(calculatedAmount)
+    setCalculatedAmount(amount)
+   
+  }
+  const calculateAmount = () => {
+    if (!currencyInfo[to]) return;
+    if( amount==="")
+      { 
+        alert("Please enter amount to convert");
+        setCalculatedAmount("");
+        return;
+      } 
+    else
+    setCalculatedAmount(Number(amount) * currencyInfo[to]);
+  }
+  return (
+
+
+    <>
+    <h2 className="text-center mt-3"  id="currencyConverter"> Currency Converter</h2>
+      <div className="container position-relative d-flex justify-content-center mt-3" >
+        <form onSubmit={(e) => {
+          e.preventDefault();
+          calculateAmount();
+        }} className=" d-flex flex-column justify-content-center align-items-center 
+                position-relative gap-3 bg-white shadow-lg py-4 rounded-4 px-4 col-10 col-lg-5 mx-auto ">
+          <InputBox
+            label='From'
+             amount={amount}
+             currencyOptions={options}
+             onCurrencyChange={(currency)=>setFrom(currency)}
+             selectCurrency={from}
+             onAmountChange={(amount)=>setAmount(amount)}
+             
+          />
+          <span className=" btn btn-primary px-2 py-1 position-absolute mb-5 rounded-3 text-white" onClick={swap}>SWAP</span>
+          <InputBox
+            label='To'
+            amount={calculatedAmount}
+            currencyOptions={options}
+            onCurrencyChange={(currency)=>setTo(currency)}
+            selectCurrency={to}
+           amountDisabled={true}
+          />
+          <button type="submit" className="btn btn-primary">Convert {from.toUpperCase()} to {to.toUpperCase()}</button>
+
+        </form>
+      </div>
+    </>
+  )
+}
