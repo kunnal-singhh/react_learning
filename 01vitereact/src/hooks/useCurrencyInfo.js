@@ -11,8 +11,8 @@ export default function useCurrencyInfo(currency) {
       const json = await res.json();
       setData(json[currency]);
     }
-
     fetchCurrency();
+    
   }, [currency]);
 
   return data;

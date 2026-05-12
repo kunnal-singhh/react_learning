@@ -67,17 +67,18 @@ export default function App() {
 
 // named export
 export function NavBar() {
+ 
   return (
 
     <>
 
-      <div className="container-fluid mt-4 mb-4">
-        <div className="container  py-3 z-5 bg-white rounded-5  shadow-sm" style={{ position: 'sticky', Top: '1rem', left: 0, right: 0, height: '50px' ,border: '1px solid #ccc'}} id="top">
-          <div className="row  d-flex flex-row justify-content-center align-items-center">
+      <div className="container-fluid pt-4 mb-4">
+        <div className="container z-5 bg-white rounded-5  shadow-sm navbar-con" style={{ position: 'sticky', left: 0, right: 0, height: '70px' ,border: '1px solid #ccc'}} id="top">
+          <div className="row d-flex align-items-center">
             <div className="col-6 col-lg-3 text-center " >
               <a href="#top" className="text-decoration-none text-dark ms-3 fw-bolder "  >ReactLearning</a>
             </div>
-            <div className="col-6 col-lg-9  d-flex flex-row justify-content-evenly align-items-center ">
+            <div className="col-6 col-lg-9  custom-hide-on-small">
               <a href="#currencyConverter" className="text-decoration-none text-dark ms-3" >CurrencyConverter</a>
               <a href="#counterApp" className="text-decoration-none text-dark ms-3" >CounterApp</a>
               <a href="#clockApp" className="text-decoration-none text-dark ms-3" >ClockApp</a>
@@ -85,6 +86,7 @@ export function NavBar() {
               <a href="#todoList" className="text-decoration-none text-dark ms-3" >TodoList</a>
               <a href="#githubUsers" className="text-decoration-none text-dark ms-3" >GitHubUsers</a>
             </div>
+            <div className="hamburger-menu col-6 "><span className="fs-2">☰</span></div>
           </div>
         </div>
       </div>
@@ -276,7 +278,7 @@ export function PasswordGenerator() {
       <h2 className="text-center mt-4" id="passwordGenerator">Password Generator</h2>
       <div className="conainer-fluid mt-3">
         <div className="container  bg-light px-5 shadow-lg p-4 rounded-4 mx-auto col-10 col-lg-5 ">
-          <div className="row d-flex flex-row justify-content-center align-items-center gap-3 gap-lg-0">
+          <div className="row d-flex flex-row justify-content-center align-items-center gap-3">
             <div className="col-12 col-lg-10 p-0">
               <input type="text" ref={passwordRef} style={{ "height": "35px", "padding-left": "10px" }} value={password} readOnly placeholder="Generated Password" className="w-100 border-1 rounded-2" />
             </div>
@@ -359,7 +361,7 @@ export function TodoList() {
             <div className="col-12 col-lg-7 p-0">
               <input type="text" style={{ "height": "35px", "padding-left": "10px" }} value={task} onChange={(e) => { setTask(e.target.value) }} placeholder="add task" className="w-100 border-1 rounded-2" />
             </div>
-            <div className="col-12 col-lg-2 p-0">  <button className="btn btn-primary px-3 py-1 w-100 rounded-2 " onClick={addTask}>Add </button></div>
+            <div className="col-12 col-lg-2 p-0">  <button type="button" className="btn btn-primary px-3 py-1 w-100 rounded-2 " onClick={addTask}>Add </button></div>
           </div>
 
         </div>
@@ -384,6 +386,7 @@ export function CurrencyConverter() {
   const [calculatedAmount, setCalculatedAmount] = useState("");
   const [from, setFrom] = useState("usd");
   const [to, setTo] = useState("inr");
+  
   const currencyInfo = useCurrencyInfo(from);
   const options = Object.keys(currencyInfo);
  const swap = () => {
@@ -425,7 +428,7 @@ export function CurrencyConverter() {
              onAmountChange={(amount)=>setAmount(amount)}
              
           />
-          <span className=" btn btn-primary px-2 py-1 position-absolute mb-5 rounded-3 text-white" onClick={swap}>SWAP</span>
+          <span className=" btn btn-primary px-2 py-1 position-absolute rounded-3 text-white" style={{marginBottom: '55px'}} onClick={swap}>SWAP</span>
           <InputBox
             label='To'
             amount={calculatedAmount}

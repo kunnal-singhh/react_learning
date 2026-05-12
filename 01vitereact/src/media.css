@@ -3,3 +3,25 @@
         max-width: 1600px;
     }
 }
+@media screen and (max-width:996px) {
+    .navbar-con {
+        height: 70px !important;
+        padding-top:14px !important;
+    }
+    .custom-hide-on-small {
+        display: none !important;
+        text-align: center;
+    }
+    .hamburger-menu {
+        display: block !important;
+        text-align: center;
+    }
+}
+@media screen and (min-width:997px) {
+    .navbar-con {
+        padding-top: 23px !important;
+    }
+    .hamburger-menu {
+        display: none !important;
+    }
+}
